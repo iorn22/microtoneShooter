@@ -53,12 +53,11 @@
             #freqUnit{
                 font-size:40px;
             }
-            #freqResult{
-                font-size:20px;
+            #result{
+                font-size:30px;
                 font-weight:bold;
                 font-family:"Century Gothic", "Avenir";
                 text-align:center;
-                visibility:hidden;
                 /*margin-right:calc(50% - 7em);*/
             }
             .trMargin{
@@ -147,7 +146,7 @@
         <table><tr>
             <td><button id="sndBt"><img src="img/snd.png"></button></td>
             <td width="100%"><div id="freq"><span id="freqIndex">262</span><span id="freqUnit">Hz</span></div></td>
-        </tr><tr class="trMargin"></tr><tr><td></td><td id="freqResult"></td></tr><tr class="trMargin"></tr></table>
+        </tr><tr class="trMargin"></tr><tr><td></td><td id="result"></td></tr><tr class="trMargin"></tr></table>
         <table id="ansArea1" width="100%"><tr width="100%">
             <td id="ansA1K0" class="ansKW" onclick="ans(1, 0)">C</td>
             <td id="ansA1K1" class="ansKB" onclick="ans(1, 1)">C#</td>
@@ -193,7 +192,7 @@
             const sndObj = document.getElementById("sndBt");
             const freqObj = document.getElementById("freq");
             const freqValueObj = document.getElementById("freqIndex");
-            const freqResultObj = document.getElementById("freqResult");
+            const resultObj = document.getElementById("result");
             const scoreObj = document.getElementById("scoreText");
 
             const ansA1DivObj = document.getElementById("ansArea1");
@@ -282,20 +281,17 @@
                     ansA2DivObj.style.visibility = "hidden";
                     ansA3DivObj.style.visibility = "hidden";
                     freqObj.style.visibility = "hidden";
-                    freqResultObj.style.visibility = "hidden";
                 }else if(lv == 2){
                     ansA1DivObj.style.visibility = "hidden";
                     ansA2DivObj.style.visibility = "visible";
                     ansA3DivObj.style.visibility = "hidden";
                     freqObj.style.visibility = "hidden";
-                    freqResultObj.style.visibility = "hidden";
                     ansA2Gen();
                 }else{
                     ansA1DivObj.style.visibility = "hidden";
                     ansA2DivObj.style.visibility = "hidden";
                     ansA3DivObj.style.visibility = "visible";
                     freqObj.style.visibility = "visible";
-                    freqResultObj.style.visibility = "visible";
                 };
             };
 
@@ -460,10 +456,10 @@
                         };
                     }else{
                         freq_error = ansA3SliderObj.value - freq_ans[0];
-                        freqResultObj.innerText = "Ans:" + freq_ans[0].toString() + "Hz 誤差:" + freq_error.toString() + "Hz";
+                        resultObj.innerText = "Ans:" + freq_ans[0].toString() + "Hz 誤差:" + freq_error.toString() + "Hz";
                         if(Math.abs(freq_error) < 30){ // 正解(誤差±30Hz未満)
                             score += Math.round(Math.abs(30 - freq_error));
-                            freqResultObj.innerText = freqResultObj.innerText + "+" + Math.round(Math.abs(30 - freq_error)).toString() + "pts";
+                            resultObj.innerText = resultObj.innerText + "+" + Math.round(Math.abs(30 - freq_error)).toString() + "pts";
                             gameFlag = 2;
                         }else{ // 不正解
                             gameFlag = 0;
@@ -474,6 +470,7 @@
 
             function finish(){
                 scoreObj.innerText = "Game Over";
+                resultObj.innerText = "Score:" + score.toString();
             };
             
             function snd(){
