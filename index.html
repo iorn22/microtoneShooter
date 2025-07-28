@@ -458,8 +458,8 @@
                         freq_error = ansA3SliderObj.value - freq_ans[0];
                         resultObj.innerText = "Ans:" + freq_ans[0].toString() + "Hz 誤差:" + freq_error.toString() + "Hz";
                         if(Math.abs(freq_error) < 30){ // 正解(誤差±30Hz未満)
-                            score += Math.round(Math.abs(30 - freq_error));
-                            resultObj.innerText = resultObj.innerText + "+" + Math.round(Math.abs(30 - freq_error)).toString() + "pts";
+                            score += Math.round(Math.abs(30 - Math.abs(freq_error)));
+                            resultObj.innerText = resultObj.innerText + " +" + Math.round(Math.abs(30 - freq_error)).toString() + "pts";
                             gameFlag = 2;
                         }else{ // 不正解
                             gameFlag = 0;
