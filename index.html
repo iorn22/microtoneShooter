@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta lang="ja">
+        <style>
+            body{
+                background-color:#dddddd;
+                margin-top:-25px;
+            }
+            h1{
+                font-size:50px;
+            }
+            #btTable{
+                margin:auto;
+            }
+            #startBt{
+                width:10em;
+                height:4em;
+            }
+            .btMargin{
+                width:5em;
+            }
+            #score{
+                text-align:center;
+                font-size:30px;
+                font-weight:bold;
+                font-family:"Century Gothic", "Avenir";
+            }
+            #scoreText{
+                font-size:100px;
+            }
+            #sndBt{
+                width:150px;
+                height:150px;
+                border-radius:100px;
+                background-color:#FF6060;
+                margin-left:50px;
+            }
+            #sndBt img{
+                width:100px;
+            }
+            #freq{
+                font-weight:bold;
+                font-family:"Century Gothic", "Avenir";
+                text-align:center;
+                visibility:hidden;
+                /*margin-right:calc(50% - 7em);*/
+            }
+            #freqIndex{
+                text-align:center;
+                font-size:100px;
+            }
+            #freqUnit{
+                font-size:40px;
+            }
+            #freqResult{
+                font-size:20px;
+                font-weight:bold;
+                font-family:"Century Gothic", "Avenir";
+                text-align:center;
+                visibility:hidden;
+                /*margin-right:calc(50% - 7em);*/
+            }
+            .trMargin{
+                height:50px;
+            }
+
+            #ansArea1{
+                width:100%;
+                height:50px;
+            }
+            #ansArea1 tr td{
+                width:4%;
+                font-size:15px;
+            }
+            .ansKW{
+                background-color:#ffffff;
+                height:50px;
+                text-align:center;
+            }
+            .ansKB{
+                background-color:#000000;
+                color:#ffffff;
+                text-align:center;
+            }
+
+            #ansArea2{
+                width:100%;
+                height:50px;
+            }
+            #ansArea2Txt{
+                width:3em;
+                font-size:50px;
+            }
+            #ansArea3{
+                visibility:hidden;
+            }
+            #ansA3Slider{
+                appearance:none;
+                width:100%;
+                height:12px;
+                border:1px solid #333333;
+                border-radius: 9999px;
+                cursor: pointer;
+            }
+            #ansA3Slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333333;
+            border-radius: 9999px;
+            background: #06b6d4;
+            box-shadow: none;
+            }
+            #ansBt{
+                display:block;
+                margin:auto;
+                width:10em;
+                height:4em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>微分音当て</h1>
+        <table id="btTable">
+            <tr>
+                <td>難易度</td>
+                <form id="lvRadio">
+                <td><label><input type="radio" name="lv" value="1" onchange="lvChange()" checked>音名(通常)</label></td>
+                <td><label><input type="radio" name="lv" value="2" onchange="lvChange()">音名(微分音)</label></td>
+                <td><label><input type="radio" name="lv" value="3" onchange="lvChange()">Hz</label></td>
+                </form>
+                <td class="btMargin"></td>
+                <td>音数</td>
+                <td><input id="poly" type="range" min="1" max="5" step="1" Value="1"></td>
+                <td><span id="polyValue">1</span></td>
+                <td class="btMargin"></td>
+                <td>平均律</td>
+                <td><input id="edo" type="range" min="6" max="48" step="1" value="24"></td>
+                <td><span id="edoValue">24</span></td>
+                <td class="btMargin"></td>
+                <td><button id="startBt">ゲームスタート</button></td>
+            </tr>
+        </table>
+        <div id="score">Score<br><span id="scoreText">0</span></div>
+        <table><tr>
+            <td><button id="sndBt"><img src="img/snd.png"></button></td>
+            <td width="100%"><div id="freq"><span id="freqIndex">262</span><span id="freqUnit">Hz</span></div></td>
+        </tr><tr class="trMargin"></tr><tr><td></td><td id="freqResult"></td></tr><tr class="trMargin"></tr></table>
+        <table id="ansArea1" width="100%"><tr width="100%">
+            <td id="ansA1K0" class="ansKW" onclick="ans(1, 0)">C</td>
+            <td id="ansA1K1" class="ansKB" onclick="ans(1, 1)">C#</td>
+            <td id="ansA1K2" class="ansKW" onclick="ans(1, 2)">D</td>
+            <td id="ansA1K3" class="ansKB" onclick="ans(1, 3)">D#</td>
+            <td id="ansA1K4" class="ansKW" onclick="ans(1, 4)">E</td>
+            <td id="ansA1K5" class="ansKW" onclick="ans(1, 5)">F</td>
+            <td id="ansA1K6" class="ansKB" onclick="ans(1, 6)">F#</td>
+            <td id="ansA1K7" class="ansKW" onclick="ans(1, 7)">G</td>
+            <td id="ansA1K8" class="ansKB" onclick="ans(1, 8)">G#</td>
+            <td id="ansA1K9" class="ansKW" onclick="ans(1, 9)">A</td>
+            <td id="ansA1K10" class="ansKB" onclick="ans(1, 10)">A#</td>
+            <td id="ansA1K11" class="ansKW" onclick="ans(1, 11)">B</td>
+            <td id="ansA1K12" class="ansKW" onclick="ans(1, 12)">C</td>
+            <td id="ansA1K13" class="ansKB" onclick="ans(1, 13)">C#</td>
+            <td id="ansA1K14" class="ansKW" onclick="ans(1, 14)">D</td>
+            <td id="ansA1K15" class="ansKB" onclick="ans(1, 15)">D#</td>
+            <td id="ansA1K16" class="ansKW" onclick="ans(1, 16)">E</td>
+            <td id="ansA1K17" class="ansKW" onclick="ans(1, 17)">F</td>
+            <td id="ansA1K18" class="ansKB" onclick="ans(1, 18)">F#</td>
+            <td id="ansA1K19" class="ansKW" onclick="ans(1, 19)">G</td>
+            <td id="ansA1K20" class="ansKB" onclick="ans(1, 20)">G#</td>
+            <td id="ansA1K21" class="ansKW" onclick="ans(1, 21)">A</td>
+            <td id="ansA1K22" class="ansKB" onclick="ans(1, 22)">A#</td>
+            <td id="ansA1K23" class="ansKW" onclick="ans(1, 23)">B</td>
+            <td id="ansA1K24" class="ansKW" onclick="ans(1, 24)">C</td>
+        </tr></table>
+        <br>
+        <table id="ansArea2" width="100%"><tr id="ansArea2tr" width="100%"></tr></table>
+        <br>
+        <div id="ansArea3" width="100%"><input id="ansA3Slider" type="range" min="262" max="928" step="1" value="262"></div>
+        <button id="ansBt">確定</button>
+
+        <script>
+            // HTML-JS 紐づけ
+            const lvRadioObj = document.getElementById("lvRadio");
+            const lvObj = document.getElementsByName("lv");
+            const polyObj = document.getElementById("poly");
+            const polyValueObj = document.getElementById("polyValue");
+            const edoObj = document.getElementById("edo");
+            const edoValueObj = document.getElementById("edoValue");
+            const startObj = document.getElementById("startBt");
+            const sndObj = document.getElementById("sndBt");
+            const freqObj = document.getElementById("freq");
+            const freqValueObj = document.getElementById("freqIndex");
+            const freqResultObj = document.getElementById("freqResult");
+            const scoreObj = document.getElementById("scoreText");
+
+            const ansA1DivObj = document.getElementById("ansArea1");
+            var ansA1Obj = [];
+            for(var i = 0; i < 25; i++){
+                ansA1Obj[i] = document.getElementById("ansA1K" + i.toString());
+            };
+
+            const ansA2DivObj = document.getElementById("ansArea2");
+            const ansA2trObj = document.getElementById("ansArea2tr");
+            var ansA2Obj = [];
+            var td = document.createElement("td");
+
+            const ansA3DivObj = document.getElementById("ansArea3");
+            const ansA3SliderObj = document.getElementById("ansA3Slider");
+
+            const ansObj = document.getElementById("ansBt");
+
+            const keyName = ["C ", "C", "D ", "D", "E ", "F ", "F", "G ", "G", "A ", "A", "B"];
+            const keyWID = [0, 2, 4, 5, 7, 9, 11, 12]; // 白鍵の番号
+            var sharpSrc = [];
+            for(var i = 0; i < 16; i++){
+                sharpSrc[i] = "img/" + i.toString() + ".png";
+            };
+            
+            const C4Freq = 262;
+            const WaitForClick = () => new Promise(resolve => document.body.addEventListener("click", resolve));
+
+            // グローバル変数
+            var lv;
+            var poly;
+            var edo;
+
+            var midino_ans = new Array(0);
+            var freq_ans = new Array(0);
+            var player_ans = new Array(0);
+            var gameFlag = 0; // 0...開始前 1...回答待ち 2...次の問題
+            var score;
+            var ansA1 = new Array();
+
+            function randint(a, b){
+                return Math.floor(Math.random() * (b + 1 - a)) + a;
+            };
+
+            function sortint(ary){
+                var f = function (a, b) {
+                    return a - b
+                }
+                return ary.sort(f);
+            };
+
+            function playTone(frequency, duration) {
+                return new Promise(resolve => {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+
+                    oscillator.type = "sine"; // 正弦波
+                    oscillator.frequency.value = frequency; // 周波数を設定
+                    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // 音量調整
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+
+                    oscillator.start();
+                    setTimeout(() => {
+                        oscillator.stop();
+                        resolve();
+                    }, duration);
+                });
+            };
+
+            function lvGet(){
+                for(let i = 0; i < lvObj.length; i++){
+                    if(lvObj.item(i).checked){
+                        var result = lvObj.item(i).value;
+                    };
+                };
+                return Number(result);
+            };
+
+            function lvChange(){
+                lv = lvGet();
+                if(lv == 1){
+                    ansA1DivObj.style.visibility = "visible";
+                    ansA2DivObj.style.visibility = "hidden";
+                    ansA3DivObj.style.visibility = "hidden";
+                    freqObj.style.visibility = "hidden";
+                    freqResultObj.style.visibility = "hidden";
+                }else if(lv == 2){
+                    ansA1DivObj.style.visibility = "hidden";
+                    ansA2DivObj.style.visibility = "visible";
+                    ansA3DivObj.style.visibility = "hidden";
+                    freqObj.style.visibility = "hidden";
+                    freqResultObj.style.visibility = "hidden";
+                    ansA2Gen();
+                }else{
+                    ansA1DivObj.style.visibility = "hidden";
+                    ansA2DivObj.style.visibility = "hidden";
+                    ansA3DivObj.style.visibility = "visible";
+                    freqObj.style.visibility = "visible";
+                    freqResultObj.style.visibility = "visible";
+                };
+            };
+
+            function ansA2Gen(){
+                edo = edoObj.value;
+                keyCnt = edo * 2 + 1;
+                halfTone = 12 / edo;
+                ansA2trObj.innerHTML = "";
+                for(let i = 0; i < keyCnt; i++){
+                    //ansA2trObj.appendChild(td);
+                    ansA2trObj.insertCell();
+                    ansA2Obj[i] = ansA2trObj.children[i];
+                    keyTone = halfTone * i;
+                    let j = 0;
+                    while((keyTone % 12) >= keyWID[j]){
+                        j++;
+                    };
+                    j--; // whileのカウントが1回多いから調整
+                    maxKeyW = keyWID[j] % 12;
+                    keySharp = Math.floor(((keyTone % 12) - maxKeyW) * 4);
+                    console.log(keyTone, maxKeyW, keySharp);
+                    if(Math.abs((keyTone % 12) - maxKeyW) < (1 / 2)){ // 白鍵からの音程差が±50cent未満の時
+                        keyClassName = "ansKW";
+                    }else{
+                        keyClassName = "ansKB";
+                        keySharp += 8;
+                    };
+                    ansA2Obj[i].setAttribute("onclick", "ans(2, " + i.toString() + ")")
+
+                    ansA2Obj[i].innerHTML = keyName[Math.floor(keyTone) % 12] + "<img height='25px' src='" + sharpSrc[keySharp] + "'>"; // #の画像を指定して音名を描画
+                    ansA2Obj[i].className = keyClassName;
+                    ansA2Obj[i].style.width = "calc(100%/" + keyCnt.toString() + ")"; // 幅を等間隔に
+                };
+            };
+
+            function polyChange(){
+                polyValueObj.innerText = polyObj.value;
+            };
+
+            function edoChange(){
+                edoValueObj.innerText = edoObj.value;
+                if(lv == 2){
+                    ansA2Gen();
+                };
+            };
+            
+            function freqChange(){
+                freqValueObj.innerText = ansA3SliderObj.value;
+            };
+
+            function init(){
+                gameFlag = 1;
+                score = 0;
+                lv = lvGet();
+                if(lv == 3){
+                    polyObj.value = 1;
+                    polyValueObj.innerText = 1;
+                };
+                poly = polyObj.value;
+                if(lv == 1){
+                    edo = 12;
+                }else{
+                    edo = edoObj.value;
+                };
+                lvObj.disabled = true;
+            };
+
+            function ques(){
+                gameFlag = 1;
+                scoreObj.innerText = score;
+                // player_ansと鍵盤の色リセット
+                player_ans = [];
+                if(lv == 1){
+                    for(let i = 0; i < ansA1Obj.length; i++){
+                        ansA1Obj[i].style.backgroundColor = null;
+                    };
+                }else if(lv == 2){
+                    for(let i = 0; i < ansA2Obj.length; i++){
+                        ansA2Obj[i].style.backgroundColor = null;
+                    };
+                };
+
+                let temp_midino_ans;
+                let temp_freq_ans;
+                freq_ans = [];
+                midino_ans = [];
+
+                while(freq_ans.length < poly){
+                    if(lv == 3){
+                        temp_midino_ans = null;
+                        temp_freq_ans = randint(C4Freq, C4Freq * 4);
+                    }else{
+                        temp_midino_ans = randint(1, edo * 2);
+                        temp_freq_ans = Math.round(C4Freq * (2 ** ((temp_midino_ans) / edo)));
+                    };
+                    if(freq_ans.indexOf(temp_freq_ans) == -1){
+                        midino_ans[midino_ans.length] = temp_midino_ans;
+                        freq_ans[freq_ans.length] = temp_freq_ans;
+                    };
+                };
+                
+                midino_ans = sortint(midino_ans);
+                freq_ans = sortint(freq_ans);
+            };
+
+            async function main(){
+                try {
+                init();
+                while(gameFlag != 0){
+                    ques();
+                    snd();
+                    while(gameFlag == 1){
+                        await WaitForClick();
+                    };
+                };
+                finish();
+                } catch (e) {alert(e)};
+            };
+
+            function ans(ansLv, k){
+                if(gameFlag == 1 && lv == ansLv){
+                    if(lv != 3){
+                        let temp_player_ans = player_ans.indexOf(k);
+                        if(temp_player_ans == -1){ // 答えに重複なし
+                            player_ans[player_ans.length] = k;
+                            if(lv == 1){
+                                ansA1Obj[k].style.backgroundColor = "#ff0000";
+                            }else{
+                                ansA2Obj[k].style.backgroundColor = "#ff0000";
+                            };
+                        }else{ // 重複ありならその答えを消す
+                            player_ans.splice(temp_player_ans, 1);
+                            if(lv == 1){
+                                ansA1Obj[k].style.backgroundColor = null;
+                            }else{
+                                ansA2Obj[k].style.backgroundColor = null;
+                            };
+                        };
+                    };
+                };
+            };
+
+            function ansCorrect(){
+                if(gameFlag == 1){
+                    if(lv != 3){
+                        player_ans = sortint(player_ans);
+                        console.log(player_ans, midino_ans);
+                        
+                        if(player_ans.toString() === midino_ans.toString()){ // 正解
+                            score++;
+                            gameFlag = 2;
+                        }else{ // 不正解
+                            gameFlag = 0;
+                            // 正解の鍵盤を青色にする
+                            for(let i = 0; i < midino_ans.length; i++){
+                                if(lv == 1){
+                                    ansA1Obj[midino_ans[i]].style.backgroundColor = "#0000ff";
+                                }else{
+                                    ansA2Obj[midino_ans[i]].style.backgroundColor = "#0000ff";
+                                };
+                            };
+                        };
+                    }else{
+                        freq_error = ansA3SliderObj.value - freq_ans[0];
+                        freqResultObj.innerText = "Ans:" + freq_ans[0].toString() + "Hz 誤差:" + freq_error.toString() + "Hz";
+                        if(Math.abs(freq_error) < 30){ // 正解(誤差±30Hz未満)
+                            score += Math.round(Math.abs(30 - freq_error));
+                            freqResultObj.innerText = freqResultObj.innerText + "+" + Math.round(Math.abs(30 - freq_error)).toString() + "pts";
+                            gameFlag = 2;
+                        }else{ // 不正解
+                            gameFlag = 0;
+                        };
+                    };
+                };
+            };
+
+            function finish(){
+                scoreObj.innerText = "Game Over";
+            };
+            
+            function snd(){
+                for(let i = 0; i < freq_ans.length; i++){
+                    sndOne(i)
+                };
+            };
+
+            async function sndOne(n){
+                if(gameFlag == 1){
+                    await playTone(freq_ans[n], 1000);
+                };
+            };
+
+            polyObj.addEventListener("input", polyChange);
+            edoObj.addEventListener("input", edoChange);
+            ansA3SliderObj.addEventListener("input", freqChange);
+            startObj.addEventListener("click", main);
+            sndObj.addEventListener("click", snd);
+            ansObj.addEventListener("click", ansCorrect);
+
+        </script>
+    </body>
+</html>
