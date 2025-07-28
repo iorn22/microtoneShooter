@@ -470,7 +470,11 @@
 
             function finish(){
                 scoreObj.innerText = "Game Over";
-                resultObj.innerText = "Score:" + score.toString();
+                if(lv == 3){
+                    resultObj.innerText = resultObj.innerText + " Score:" + score.toString();
+                }else{
+                    resultObj.innerText = "Score:" + score.toString();
+                };
             };
             
             function snd(){
